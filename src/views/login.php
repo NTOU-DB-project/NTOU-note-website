@@ -1,65 +1,78 @@
+<?php
+
+// Include the database connection file
+include("../../config/database.php");
+
+// Start session
+session_start();
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    // Check if username and password are filled
+    if (!empty($username) && !empty($password)) {
+        // Use prepared statements to prevent SQL injection
+        $stmt = $conn->prepare("SELECT USER_ID, USER_NAME FROM Account WHERE USER_NAME = ? AND password = ?");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Check if user exists
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+            $_SESSION['USER_ID'] = $user['USER_ID'];
+            $_SESSION['USER_NAME'] = $user['USER_NAME'];
+            header('Location: dashboard.php');
+            exit;
+        } else {
+            $error = "無效的帳號或密碼！";
+        }
+        $stmt->close();
+    } else {
+        $error = "請輸入帳號和密碼！";
+    }
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-        }
-        .login-container form {
-            display: flex;
-            flex-direction: column;
-        }
-        .login-container form input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .login-container form button {
-            padding: 10px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .login-container form button:hover {
-            background-color: #218838;
-        }
-        .login-container .register-link {
-            margin-top: 10px;
-            text-align: center;
-        }
-    </style>
+    <title>登入 - NTOU 筆記系統</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="login_process.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+    <!-- Menu Bar -->
+    <div class="menu">
+        <table class="menu_css">
+            <tr>
+                <td><a href="../../public/index.php">首頁</a></td>
+            </tr>
+        </table>
+    </div>
+    
+
+    <!-- Login Form Content -->
+    <div class="content">
+        <h1>登入系統</h1>
+
+        <?php if (isset($error)): ?>
+            <div style="color: red; margin-bottom: 20px;"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <form method="POST" action="login.php" class="auth-form">
+            <div class="input-group">
+                <input type="text" name="username" placeholder="帳號" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="密碼" required>
+            </div>
+            <button type="submit" class="button">登入</button>
         </form>
-        <div class="register-link">
-            <a href="register.php">Don't have an account? Register here</a>
-        </div>
+
+        <a href="register.php" class="button" style="margin-top: 20px;">創建新賬號</a>
     </div>
 </body>
-</html></form></html>
+</html>
