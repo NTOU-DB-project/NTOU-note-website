@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <!-- Menu Bar -->
     <div class="menu">
-        <table class="menu_css">
+        <table class="menu_left">
             <tr>
                 <td><a href="../../public/index.php">首頁</a></td>
             </tr>

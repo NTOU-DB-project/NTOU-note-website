@@ -10,8 +10,8 @@ body {
     font-family: '微軟正黑體', '新細明體', '標楷體';
     overflow: hidden;
 }
-
-/* Menu bar styles with black border */
+/* Menu styles */
+/* Menu styles */
 .menu {
     position: fixed;
     top: 0;
@@ -19,10 +19,73 @@ body {
     height: 40px;
     background-color: lightgreen;
     z-index: 9999;
+    border-bottom: 2px solid black;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border-bottom: 2px solid dimgrey; /* Added black border */
+    justify-content: space-between; /* Align the three sections horizontally */
+    padding: 0 20px; /* Add padding to the sides for better appearance */
+    box-sizing: border-box;
+}
+
+.menu_left {
+    position: absolute;
+    left: 20px; /* Position "首頁" on the left */
+    display: flex;
+    align-items: center;
+}
+
+.menu_center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center align the "搜尋筆記" and "文件庫" */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu_right {
+    position: absolute;
+    right: 20px; /* Position "使用者" and "設定" on the right */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.menu input[type="text"] {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.button {
+    background-color: lightblue;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #1e90ff;
+}
+.menu_button {
+    display: inline-block;
+    padding: 5px 10px;
+    height: 30px;
+    line-height: 30px;
+    background: lightblue; /* Match menu bar background */
+    border-bottom: 2px solid black;
 }
 
 .menu_css {
@@ -180,4 +243,61 @@ button.button {
 }
 button[type="submit"]:hover {
     background-color: #1e90ff;
+}
+
+.document-container {
+    margin: 20px 0; /* Fixed vertical margins, no auto-centering */
+    width: 90%;     /* Fixed width for the container */
+    max-width: 1200px; /* Prevents overly wide layout */
+}
+
+/* Category bar styling */
+.category-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-bar div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.category-bar button {
+    padding: 10px;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+}
+
+/* Document list styling */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.document-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.document-item .details {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.document-item .delete-btn {
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.document-item .delete-btn:hover {
+    color: darkred;
 }
